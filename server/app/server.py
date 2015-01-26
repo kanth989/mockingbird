@@ -14,7 +14,7 @@ app.config.from_object('app.config')
 
 # flask-sqlalchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')
-app.config['SERVER_NAME'] = 'localhost:5000'
+# app.config['SERVER_NAME'] = '127.0.0.1:5123'
 db = SQLAlchemy(app)
 
 import pdb
@@ -28,6 +28,7 @@ flask_bcrypt = Bcrypt(app)
 # flask-httpauth
 auth = HTTPBasicAuth()
 
+'''
 @app.before_request
 def before_request():
     print request.host
@@ -37,12 +38,14 @@ def before_request():
 	# print request.host[:-len(app.config['SERVER_NAME'])].rstrip('.')
   		pass
 
-
+'''
 # @app.route('/', defaults={'path': ''}, subdomain='qa')
-@app.route('/<path:path>', subdomain="<userapp>")
-def user_profile(path,userapp):
-    return userapp
-
+@app.route('/<path:path>')
+def user_profile(path):
+    apps = path.split('&')
+    app_name = apps[0].split('=')[1]
+    app_path = apps[1].split('=')[1]
+    return "Path this is kanth "+app_name+" "+app_path
 
 
 @app.after_request
