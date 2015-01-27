@@ -28,24 +28,23 @@ flask_bcrypt = Bcrypt(app)
 # flask-httpauth
 auth = HTTPBasicAuth()
 
-'''
+
 @app.before_request
 def before_request():
     print request.host
-    if 'qa' in request.host[:-len(app.config['SERVER_NAME'])].rstrip('.'):
-        redirect(url_for('user_profile'))
-    else:
-	# print request.host[:-len(app.config['SERVER_NAME'])].rstrip('.')
-  		pass
+    print request.args
+   
 
-'''
-# @app.route('/', defaults={'path': ''}, subdomain='qa')
+
+#@app.route('/', defaults={'path': ''}, subdomain='qa')
 @app.route('/<path:path>')
 def user_profile(path):
-    apps = path.split('&')
-    app_name = apps[0].split('=')[1]
+    print path
+    apps = path.split('&') 
+    print apps
+    app_name = apps[0].split('=')[1].replace('wwww.','')
     app_path = apps[1].split('=')[1]
-    return "Path this is kanth "+app_name+" "+app_path
+    return "---------"+app_name+"-------------- "+app_path
 
 
 @app.after_request
