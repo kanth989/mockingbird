@@ -4,7 +4,7 @@ from flask.ext import restful
 from server import api, db, flask_bcrypt, auth
 from models import User, Post #, Endpoints
 from forms import UserCreateForm, SessionCreateForm, PostCreateForm #, PostEndPointForm
-from serializers import UserSerializer, PostSerializer #, EndpointSerializer
+from serializers import UserSerializer, PostSerializer, DomainSerializer #, EndpointSerializer
 
 @auth.verify_password
 def verify_password(email, password):
@@ -57,6 +57,17 @@ class PostView(restful.Resource):
         return PostSerializer(posts).data
 
 
+class Alldomains(restful.Resource):
+    def get(self, path):
+        apps = path.split('&')
+        app_name = apps[0].split('=')[1].split('.')[1]
+        app_path = apps[1].split('=')[1]
+        posts = Post.query.filter_by(title= app_name, endpoint=app_path).first()
+        
+        return DomainSerializer(posts).data
+
+
+
 # class EndPointListView(restful.Resource):
 #     def get(self):
 #         endpoints = Endpoints.query.all()
@@ -85,3 +96,4 @@ api.add_resource(PostListView, '/api/v1/posts')
 api.add_resource(PostView, '/api/v1/posts/<int:id>')
 # api.add_resource(EndPointListView, '/api/v1/endpoints')
 # api.add_resource(EndPointView, '/api/v1/endpoints/<int:id>')
+api.add_resource(Alldomains, '/<path:path>')

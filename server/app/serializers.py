@@ -10,6 +10,15 @@ class PostSerializer(Serializer):
     class Meta:
         fields = ("id", "title", "endpoint" ,"body", "user", "created_at", "status")
 
+
+
+
+class DomainSerializer(Serializer):
+	class Meta:
+		fields = ("body",)
+
+
+
 # class EndpointSerializer(Serializer):
 #     user = fields.Nested(UserSerializer)
 

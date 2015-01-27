@@ -7,6 +7,8 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.bcrypt import Bcrypt
 from flask.ext.httpauth import HTTPBasicAuth
 
+
+
 basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../')
 
 app = Flask(__name__)
@@ -28,7 +30,7 @@ flask_bcrypt = Bcrypt(app)
 # flask-httpauth
 auth = HTTPBasicAuth()
 
-
+'''
 @app.before_request
 def before_request():
     print request.host
@@ -44,8 +46,9 @@ def user_profile(path):
     print apps
     app_name = apps[0].split('=')[1].replace('wwww.','')
     app_path = apps[1].split('=')[1]
-    return "---------"+app_name+"-------------- "+app_path
-
+#    body =db.Post.query.filter_by(db.Post.title=app_name, db.Post.endpoint=app_path).first()
+    return app_name
+'''
 
 @app.after_request
 def after_request(response):
