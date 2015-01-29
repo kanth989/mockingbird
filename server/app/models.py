@@ -22,6 +22,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
     endpoint =db.Column(db.String(220), nullable=False)
+    endpointmethod = db.Column(db.String(10),nullable=False)
     body = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     status  = db.Column(db.Boolean, default=True)
@@ -29,10 +30,11 @@ class Post(db.Model):
     # enpoint_id = db.Column(db.Integer, db.ForeignKey('eposts.id'))
     
 
-    def __init__(self, title, endpoint,body):
+    def __init__(self, title, endpoint,body,endpointmethod):
         self.title = title
         self.endpoint= endpoint
         self.body = body
+        self.endpointmethod=endpointmethod
         self.user_id = g.user.id
 
     def __repr__(self):
