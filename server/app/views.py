@@ -1,4 +1,4 @@
-from flask import g
+from flask import g, abort
 from flask.ext import restful
 
 from server import api, db, flask_bcrypt, auth
@@ -87,7 +87,7 @@ class Alldomains(restful.Resource):
         if body:
             return body
         else: 
-            return 'Method Not allowed' , 405
+            return  abort(405)# 'Method Not allowed' , 405
 
     def post(self, path):
         apps = path.split('&')
@@ -98,7 +98,7 @@ class Alldomains(restful.Resource):
         if body:
             return body
         else: 
-            return 'Method Not allowed' , 405
+            return abort(405)#'Method Not allowed' , 405
     
     def put(self,path):
         apps = path.split('&')
@@ -106,11 +106,10 @@ class Alldomains(restful.Resource):
         app_path = apps[1].split('=')[1]
         posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='PUT').first()
         body = DomainSerializer(posts).data['body']
-        print body
         if body:
             return body
         else:
-            return 'Method Not allowed' , 405
+            return abort(405)#'Method Not allowed' , 405
 
     def delete():
 	pass
