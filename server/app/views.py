@@ -47,6 +47,9 @@ class PostListView(restful.Resource):
         form = PostCreateForm()
         if not form.validate_on_submit():
             return form.errors, 422
+        postdata = Post.query.filter_by(title = form.title.data,endpoint = form.endpoint.data , endpointmethod = form.endpointmethod.data).first()
+        if PostSerializer(postdata).data['id']:
+            return "Endpoint method already exists"
         post = Post(form.title.data, form.endpoint.data ,form.body.data, form.endpointmethod.data)
         db.session.add(post)
         db.session.commit()
@@ -55,7 +58,7 @@ class PostListView(restful.Resource):
 class PostView(restful.Resource):
     def get(self, id):
         posts = Post.query.filter_by(id=id).first()
-        return PostSerializer(posts).dat
+        return PostSerializer(posts).data
 
     @auth.login_required
     def post(self,id):
@@ -77,17 +80,37 @@ class PostView(restful.Resource):
 class Alldomains(restful.Resource):
     def get(self, path):
         apps = path.split('&')
-	print apps
         app_name = apps[0].split('=')[1].split('.')[1]
-        app_path = apps[1].split('=')[1]
-        posts = Post.query.filter_by(title= app_name, endpoint=app_path).first()
-        
-        return DomainSerializer(posts).data
+        app_path = apps[1].split('=')[1].split('.')[1]
+        posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='GET').first()
+        body = DomainSerializer(posts).data['body']
+        if body:
+            return body
+        else: 
+            return 'Method Not allowed' , 405
+
     def post(self, path):
- 	pass
+        apps = path.split('&')
+        app_name = apps[0].split('=')[1].split('.')[1]
+        app_path = apps[1].split('=')[1].split('.')[1]
+        posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='POST').first()
+        if body:
+            return body
+        else: 
+            return 'Method Not allowed' , 405
     
     def put(self,path):
-	pass
+        apps = path.split('&')
+        app_name = apps[0].split('=')[1].split('.')[1]
+        app_path = apps[1].split('=')[1].split('.')[1]
+        posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='PUT').first()
+        body = DomainSerializer(posts).data['body']
+        print body
+        if body:
+            return body
+        else:
+            return 'Method Not allowed' , 405
+
     def delete():
 	pass
 
