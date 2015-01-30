@@ -47,7 +47,7 @@ class PostListView(restful.Resource):
         form = PostCreateForm()
         if not form.validate_on_submit():
             return form.errors, 422
-        postdata = Post.query.filter_by(title = form.title.data,endpoint = form.endpoint.data , endpointmethod = form.endpointmethod.data).first()
+        postdata = Post.query.filter_by(title = form.title.data,endpoint = form.endpoint.data , endpointmethod = form.endpointmethod.data, user=g.user).first()
         if PostSerializer(postdata).data['id']:
             return "Endpoint method already exists"
         post = Post(form.title.data, form.endpoint.data ,form.body.data, form.endpointmethod.data)
