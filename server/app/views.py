@@ -84,7 +84,6 @@ class Alldomains(restful.Resource):
         app_path = apps[1].split('=')[1].split('.')[1]
         posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='GET').first()
         body = DomainSerializer(posts).data['body']
-        print body
         if body:
             return body
         else: 
@@ -95,13 +94,10 @@ class Alldomains(restful.Resource):
         app_name = apps[0].split('=')[1].split('.')[1]
         app_path = apps[1].split('=')[1].split('.')[1]
         posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='POST').first()
-        body = DomainSerializer(posts).data['body']
-        print body
         if body:
             return body
         else: 
             return 'Method Not allowed' , 405
-	pass
     
     def put(self,path):
         apps = path.split('&')
@@ -114,9 +110,6 @@ class Alldomains(restful.Resource):
             return body
         else:
             return 'Method Not allowed' , 405
-        pass
-
-	pass
 
     def delete():
 	pass
