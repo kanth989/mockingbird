@@ -6,6 +6,13 @@ from models import User, Post #, Endpoints
 from forms import UserCreateForm, SessionCreateForm, PostCreateForm #, PostEndPointForm
 from serializers import UserSerializer, PostSerializer, DomainSerializer #, EndpointSerializer
 
+
+def extract(path):
+    apps = path.split('&')
+    app_name = apps[0].split('=')[1].split('.')[1]
+    app_path = apps[1].split('=')[1]
+    return app_name,app_path
+
 @auth.verify_password
 def verify_password(email, password):
     user = User.query.filter_by(email=email).first()
@@ -79,9 +86,7 @@ class PostView(restful.Resource):
 
 class Alldomains(restful.Resource):
     def get(self, path):
-        apps = path.split('&')
-        app_name = apps[0].split('=')[1].split('.')[1]
-        app_path = apps[1].split('=')[1].split('.')[1]
+        app_name,app_path = extract(path)
         posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='GET').first()
         body = DomainSerializer(posts).data['body']
         if body:
@@ -90,29 +95,31 @@ class Alldomains(restful.Resource):
             return 'Method Not allowed' , 405
 
     def post(self, path):
-        apps = path.split('&')
-        app_name = apps[0].split('=')[1].split('.')[1]
-        app_path = apps[1].split('=')[1].split('.')[1]
+        app_name,app_path = extract(path)
         posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='POST').first()
+        body = DomainSerializer(posts).data['body']
         if body:
             return body
         else: 
             return 'Method Not allowed' , 405
     
     def put(self,path):
-        apps = path.split('&')
-        app_name = apps[0].split('=')[1].split('.')[1]
-        app_path = apps[1].split('=')[1].split('.')[1]
+        app_name,app_path = extract(path)
         posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='PUT').first()
         body = DomainSerializer(posts).data['body']
-        print body
         if body:
             return body
         else:
             return 'Method Not allowed' , 405
 
     def delete():
-	pass
+        app_name,app_path = extract(path)
+        posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='PUT').first()
+        body = DomainSerializer(posts).data['body']
+        if body:
+            return body
+        else:
+            return 'Method Not allowed' , 405
 
 class ServiceSSview(restful.Resource):
     @auth.login_required
