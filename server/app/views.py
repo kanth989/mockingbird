@@ -50,7 +50,7 @@ class SessionView(restful.Resource):
 class PostListView(restful.Resource):
     @auth.login_required
     def get(self):
-        return self.allapps,201
+        return Response(render_template("indexnew.html" ,app_names=self.allapps),mimetype='text/html')
 
     @auth.login_required
     def post(self):
@@ -63,8 +63,10 @@ class PostListView(restful.Resource):
         post = Post(form.title.data, form.endpoint.data ,form.body.data, form.endpointmethod.data)
         db.session.add(post)
         db.session.commit()
-
-        return self.allapps
+        f = open('paaru','w')
+        f.write(render_template("indexnew.html" ,app_names=self.allapps))
+        f.close()
+        return Response(render_template("indexnew.html" ,app_names=self.allapps),mimetype='text/html')
 
     @property
     def allapps(self):

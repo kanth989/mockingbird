@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- css -->
-    <link rel="stylesheet" href="../static/css/bootstrap.css">
-    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
 
 </head>
 <style type="text/css">
@@ -28,7 +28,7 @@ a,.glyphicon{
                 <a href="#" class="link-a">login</a>
                 <div class="clearfix"></div>
                 <form action="/app" method="POST" id="uploadForm" enctype="multipart/form-data">
-                    <img src="../static/img/mock.png" style="display: block;margin: 0px auto;">
+                    <img src="{{url_for('static', filename='img/mock.png')}}" style="display: block;margin: 0px auto;">
                     <div class="form-box">
                         <!-- <input class="input-a browse-btn" type="file" name="filehere"></input> -->
                         <input class="actual" type="file" name="filehere"></input>
@@ -74,7 +74,7 @@ a,.glyphicon{
 
                                     <select class="form-control"  style="width:30%;" name="appname">
                                         {% for app_name in app_names%}
-                                        <option value="{{app_name}}">{{app_name['title']}}</option>
+                                        <option value="{{app_name['title']}}">{{app_name['title']}}</option>
                                         {%endfor%}
                                     </select>
                                 </div>
@@ -149,6 +149,7 @@ a,.glyphicon{
             </div>
         </div>  
     </div>
+
     <div class="container">
         {%for app_name in app_names%}
         <div style="height: 40px;"  class="row">
@@ -187,7 +188,7 @@ a,.glyphicon{
                 <div class="form-group ">
                     <label class="col-sm-2 control-label">Path</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="path" value={{app_name['title']+app_name['endpoint']}} ng-model="path"  style="
+                        <input type="text" class="form-control" name="path" value={{app_name['title']}}{{app_name['endpoint']}} ng-model="path"  style="
                         width: 500px;
                         border-radius: 0;
                         "/>
@@ -244,13 +245,13 @@ a,.glyphicon{
 
   <!-- scripts -->
   <section>
-    <script type="text/javascript" src="../static/js/angular.min.js"></script>
-    <script type="text/javascript" src="../static/js/angular-resource.js"></script>
-    <script type="text/javascript" src="../static/js/apibox/app.js"></script>
-    <script type="text/javascript" src="../static/js/apibox/controllers/mainController.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/angular.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/angular-resource.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/apibox/app.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/apibox/controllers/mainController.js')}}"></script>
 
-    <script type="text/javascript" src="../static/js/jquery.js"></script>
-    <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/jquery.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script>
     <script type="text/javascript" src="http://malsup.github.io/min/jquery.form.min.js"></script>
     
     <script>
@@ -312,7 +313,7 @@ $(".alert").removeClass("hide");
 
 </script>
 </section>
-<script src="../static/js/boot.js"></script>
+<script src="{{url_for('static', filename='js/boot.js')}}"></script>
 </body>
 </html>
 
