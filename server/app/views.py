@@ -64,7 +64,7 @@ class PostListView(restful.Resource):
         db.session.add(post)
         db.session.commit()
 
-        return render_template("indexnew.html" ,app_names=self.allapps)
+        return self.allapps
 
     @property
     def allapps(self):
