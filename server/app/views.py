@@ -50,8 +50,7 @@ class SessionView(restful.Resource):
 class PostListView(restful.Resource):
     @auth.login_required
     def get(self):
-        posts = Post.query.filter_by(user=g.user)
-        return PostSerializer(posts, many=True).data
+        return self.allapps,201
 
     @auth.login_required
     def post(self):
@@ -64,7 +63,14 @@ class PostListView(restful.Resource):
         post = Post(form.title.data, form.endpoint.data ,form.body.data, form.endpointmethod.data)
         db.session.add(post)
         db.session.commit()
-        return PostSerializer(post).data, 201
+
+        return render_template("indexnew.html" ,app_names=self.allapps)
+
+    @property
+    def allapps(self):
+        posts = Post.query.filter_by(user=g.user)
+        return PostSerializer(posts, many=True).data
+
 
 class PostView(restful.Resource):
     def get(self, id):
@@ -108,8 +114,10 @@ class  Fileupload(restful.Resource):
 	    if self.isValid(fname):
 	        for data in self.content.get('endpoints',None):
 		    for mets in  data.get('methods',None):
-                        updatePosts(title = self.content.get('name',None),endpoint = data.get('path',None) ,\
-                        endpointmethod = mets.get('method',None),body = mets.get('result',None)) 
+                        updatePosts(title = self.content.get('name',None),\
+                                    endpoint = data.get('path',None),\
+                                    endpointmethod = mets.get('method',None),\
+                                    body = mets.get('result',None)) 
 		return redirect('/api/v1/posts')
             return {'Message':'Not parsed'}
 	except: 

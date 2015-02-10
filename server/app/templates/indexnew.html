@@ -74,7 +74,7 @@ a,.glyphicon{
 
                                     <select class="form-control"  style="width:30%;" name="appname">
                                         {% for app_name in app_names%}
-                                        <option value="{{app_name}}">{{app_name}}</option>
+                                        <option value="{{app_name}}">{{app_name['title']}}</option>
                                         {%endfor%}
                                     </select>
                                 </div>
@@ -150,32 +150,27 @@ a,.glyphicon{
         </div>  
     </div>
     <div class="container">
-        {%for mockrest_obj in mockrest_obj_list%}
-        {% for end_p in mockrest_obj.endpoints%}
+        {%for app_name in app_names%}
         <div style="height: 40px;"  class="row">
             <div class="col-sm-12">
                 <div>
                     <div style= "padding-left: 0px; padding-top: 8px;" class="col-sm-2">
                             <form method="POST" action="/endpoint_details">
-                            <input class="hide" name="endpoint_path" value="{{end_p.path}}"/>
-                            <input class="hide" name="app_name" value="{{mockrest_obj.name}}"/>
-                            <button class="btn btn-link" style="font-size:16px;">{{mockrest_obj.name}}</button>
+                            <input class="hide" name="endpoint" value="{{app_name['endpoint']}}"/>
+                            <input class="hide" name="title" value="{{app_name['title']}}"/>
+                            <button class="btn btn-link" style="font-size:16px;">{{app_name['title']}}</button>
                             </form>
                         </div>
                 <div class="col-sm-4 tabel-cells">
-                    <a class="anc">{{end_p.path}} </a>
+                    <a class="anc">{{app_name['endpoint']}} </a>
                 </div>
                 <div class="col-sm-2 tabel-cells">
-                    <a href="#" style="cursor: default;">
-                        {% for method in end_p.methods%}
-                            {{method.method}}
-                        {%endfor%}
-                    </a>
+                    <a href="#" style="cursor: default;">{{app_name['endpointmethod']}}</a>
                 </div>
                 <div class="col-sm-2 tabel-cells">
                             <form method="POST" action="/delete_endpoint">
-                            <input class="hide" name="endpoint_path" value="{{end_p.path}}"/>
-                            <input class="hide" name="app_name" value="{{mockrest_obj.name}}"/>
+                            <input class="hide" name="endpoint" value="{{app_name['endpoint']}}"/>
+                            <input class="hide" name="title" value="{{app_name['title']}}"/>
                             <button class="btn" style="border: 0;font-size:16px;background: transparent;color: black; ">Delete</button>
                             </form>
                         </div>
@@ -192,7 +187,7 @@ a,.glyphicon{
                 <div class="form-group ">
                     <label class="col-sm-2 control-label">Path</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="path" value={{mockrest_obj.name+end_p.path}} ng-model="path"  style="
+                        <input type="text" class="form-control" name="path" value={{app_name['title']+app_name['endpoint']}} ng-model="path"  style="
                         width: 500px;
                         border-radius: 0;
                         "/>
@@ -243,7 +238,6 @@ a,.glyphicon{
               </div>-->
 
           </div>
-          {%endfor%}
           {%endfor%}
       </div>
   </div>

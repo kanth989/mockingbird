@@ -30,7 +30,7 @@ a,.glyphicon{
                     <img src="../static/img/mock.png" style="display: block;margin: 0px auto;">
                     <div class="form-box">
                         <!-- <input class="input-a browse-btn" type="file" name="filehere"></input> -->
-                        <input class="actual" type="file" name="filehere"></input>
+                        <input class="actual" type="file" name="file"></input>
                          <div class="input-group">
                            <input type="" class="form-control file-input" name="">
                            <div class="input-group-btn" style="">
@@ -43,7 +43,7 @@ a,.glyphicon{
                 </form>           
             </div>
         </div>
-        <form action="/app1" method = "POST" id="addEndpoint">
+        <form action="/api/v1/posts" method = "POST" id="addEndpoint">
             <div class="main-content container" ng-controller="mainController" ng-init="init()">
                 <div class="form-group row">
                     <div class="grey-text">Generate your custom response</div>
@@ -51,7 +51,7 @@ a,.glyphicon{
                 <div class="form-group row ">
                     <label class="col-sm-2 control-label">App Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="app_name" value="" ng-model="path" style="
+                        <input type="text" class="form-control" name="title" value="" ng-model="path" style="
                         border-radius: 0;
                         ">
                     </div>
@@ -60,7 +60,7 @@ a,.glyphicon{
                     
                     <label class="col-sm-2 control-label">Path</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="endpoint_path" value="" ng-model="path" style="
+                        <input type="text" class="form-control" name="endpoint" value="" ng-model="path" style="
                         border-radius: 0;
                         ">
                     </div>
@@ -73,7 +73,7 @@ a,.glyphicon{
 
                       <div class="dropdown">
 
-                        <select class="form-control" style="width:30%;" name="method">
+                        <select class="form-control" style="width:30%;" name="endpointmethod">
                             <option value="GET">GET</option>
                             <option value="PUT">PUT</option>
                             <option value="POST">POST</option>
@@ -85,7 +85,7 @@ a,.glyphicon{
                 <div class="form-group row">
                 <label class="col-sm-2 control-label">Response</label>
                 <div class="col-sm-10">
-                    <textarea type="text" class="form-control" name="response" ng-model="response" style="
+                    <textarea type="text" class="form-control" name="body" ng-model="response" style="
                     height: 164px;
                     border-radius: 0;
                     "></textarea>
