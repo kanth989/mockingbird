@@ -1,0 +1,25 @@
+{ endpoints : [
+    {
+        "body": "whats up",
+        "endpoint": "hey1",
+        "endpointmethod": "POST",
+        "status": true,
+        "title": "merry",
+    },
+    {
+        "body": "whats up",
+        "endpoint": "hey",
+        "endpointmethod": "GET",
+        "status": true,
+        "title": "merry",
+    },
+    {
+        "body": "Hllo",
+        "endpoint": "hey",
+        "endpointmethod": "PUT",
+        "status": true,
+        "title": "merry",
+        }
+    }
+]
+}

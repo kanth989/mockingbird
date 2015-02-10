@@ -1,5 +1,6 @@
 
 
+
 Copy the file `default` to the /etc/nginx/sites-enabled/ directory.
 
 Identify the below line in the file and replace the `localhost` with your domain name if you have any.

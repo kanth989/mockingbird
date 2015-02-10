@@ -11,7 +11,7 @@ from flask.ext.httpauth import HTTPBasicAuth
 
 basedir = os.path.join(os.path.abspath(os.path.dirname(__file__)), '../')
 
-app = Flask(__name__)
+app = Flask(__name__,static_folder='static')
 app.config.from_object('app.config')
 
 # flask-sqlalchemy
@@ -52,6 +52,7 @@ def user_profile(path):
 
 @app.after_request
 def after_request(response):
+    print response.headers
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
