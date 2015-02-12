@@ -3,7 +3,6 @@ from flask import g
 from wtforms.validators import Email
 
 from server import db, flask_bcrypt
-from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -15,22 +14,6 @@ class User(db.Model):
     def __init__(self, email, password):
         self.email = email
         self.password = flask_bcrypt.generate_password_hash(password)
-
-    def generate_auth_token(self, expiration = 600):
-        s = Serializer(app.config['SECRET_KEY'], expires_in = expiration)
-        return s.dumps({ 'id': self.id })
-
-    @staticmethod
-    def verify_auth_token(token):
-        s = Serializer(app.config['SECRET_KEY'])
-        try:
-            data = s.loads(token)
-        except SignatureExpired:
-            return None # valid token, but expired
-        except BadSignature:
-            return None # invalid token
-        user = User.query.get(data['id'])
-        return user
 
     def __repr__(self):
         return '<User %r>' % self.email
