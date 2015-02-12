@@ -1,8 +1,8 @@
 <div class="header" ng-controller="headerController">
     <div class="container">
-        <a href="#/" class="link-a">login</a>
+         <button class="btn link-a" style="border: 0;font-size:16px;background: transparent;color: black;" ng-click="logout()">logout</button>
         <div class="clearfix"></div>
-        <form xaction="/api/v1/upload" method="POST" id="uploadForm" enctype="multipart/form-data">
+        <form id="uploadForm" enctype="multipart/form-data">
             <img src="../static/img/mock.png" style="display: block;margin: 0px auto;">
             <div class="form-box">
                 <input class="actual" type="file" name="file"></input>

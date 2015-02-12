@@ -1,4 +1,4 @@
-from flask import g, request,render_template,Response,redirect,url_for,abort,send_from_directory
+from flask import g, request,render_template,Response,redirect,url_for,abort,send_from_directory,make_response
 from flask.ext import restful
 
 from server import api, db, flask_bcrypt, auth
@@ -13,7 +13,27 @@ def extract(path):
     apps = path.split('&')
     app_name = apps[0].split('=')[1].split('.')[1]
     app_path = apps[1].split('=')[1]
+    print app_name,app_path
     return app_name,app_path
+
+def getResponse(app_name,app_path, method):
+    print app_name,app_path, method
+    posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod=method,status=1).first()
+    body = DomainSerializer(posts).data['body']
+    if body:
+        return json.loads(body)
+    else: 
+        return 'Method Not allowed' , 405
+
+def processResponse(apps):
+    print apps
+    for app in apps:
+        app['body'] = json.loads(app['body'])
+    return apps
+
+def getallApps():
+    posts = Post.query.filter_by(user=g.user).order_by('title','endpoint')
+    return processResponse(PostSerializer(posts, many=True).data)
 
 @auth.verify_password
 def verify_password(email, password):
@@ -48,7 +68,7 @@ class SessionView(restful.Resource):
 class PostListView(restful.Resource):
     @auth.login_required
     def get(self):
-        return self.allapps,201
+        return getallApps(),201
 
     @auth.login_required
     def post(self):
@@ -58,21 +78,16 @@ class PostListView(restful.Resource):
         postdata = Post.query.filter_by(title = form.title.data,endpoint = form.endpoint.data , endpointmethod = form.endpointmethod.data).first()
         if PostSerializer(postdata).data['id']:
             return "Endpoint method already exists"
-        post = Post(form.title.data, form.endpoint.data ,form.body.data, form.endpointmethod.data)
+        post = Post(form.title.data, form.endpoint.data ,json.dumps(form.body.data), form.endpointmethod.data)
         db.session.add(post)
         db.session.commit()
-        return self.allapps,201
-
-    @property
-    def allapps(self):
-        posts = Post.query.filter_by(user=g.user)
-        return PostSerializer(posts, many=True).data
+        return getallApps(),201
 
 
 class PostView(restful.Resource):
     def get(self, id):
         posts = Post.query.filter_by(id=id).first()
-        return PostSerializer(posts).data
+        return processResponse(PostSerializer(posts).data)
 
     @auth.login_required
     def post(self,id):
@@ -103,6 +118,7 @@ def updatePosts(**kwargs):
 class  Fileupload(restful.Resource):
     @auth.login_required
     def post(self):
+        print request.files
         file = request.files['file']
 	filename = secure_filename(file.filename)
 	fname = str(uuid.uuid1()).replace('-','')+'.json'
@@ -115,7 +131,7 @@ class  Fileupload(restful.Resource):
                                     endpoint = data.get('path',None),\
                                     endpointmethod = mets.get('method',None),\
                                     body = mets.get('result',None)) 
-		return redirect('/api/v1/posts')
+		return getallApps(),200
             return {'Message':'Not parsed'}
 	except: 
                 import traceback
@@ -130,39 +146,20 @@ class  Fileupload(restful.Resource):
 class Alldomains(restful.Resource):
     def get(self, path):
         app_name,app_path = extract(path)
-        posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='GET').first()
-        body = DomainSerializer(posts).data['body']
-        if body:
-            return body
-        else: 
-            return 'Method Not allowed' , 405
+        return getResponse(app_name,app_path,'GET')
 
     def post(self, path):
         app_name,app_path = extract(path)
-        posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='POST').first()
-        body = DomainSerializer(posts).data['body']
-        if body:
-            return body
-        else: 
-            return 'Method Not allowed' , 405
-    
+        return getResponse(app_name,app_path,'POST')
+
     def put(self,path):
         app_name,app_path = extract(path)
-        posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='PUT').first()
-        body = DomainSerializer(posts).data['body']
-        if body:
-            return body
-        else:
-            return 'Method Not allowed' , 405
+        return getResponse(app_name,app_path,'PUT')
 
     def delete():
         app_name,app_path = extract(path)
-        posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod='PUT').first()
-        body = DomainSerializer(posts).data['body']
-        if body:
-            return body
-        else:
-            return 'Method Not allowed' , 405
+        return getResponse(app_name,app_path,'DELETE')
+
 
 class ServiceSSview(restful.Resource):
     @auth.login_required
@@ -188,10 +185,17 @@ class UI(restful.Resource):
     def get(self):
         return Response(render_template('index.html'),mimetype='text/html')
 
+class samplejson(restful.Resource):
+    def get(self):
+        resp = make_response(send_from_directory(directory=api.app.config['SAMPLE_FOLDER'] , filename='app/sample/sample.json'))
+        resp.headers["Content-Disposition"] = "attachment; filename=sample.json"
+        return resp
+
 
 # Adding Views as resources to Application
 
 api.add_resource(UI,'/')
+api.add_resource(samplejson,'/download')
 api.add_resource(UserView, '/api/v1/users')
 api.add_resource(SessionView, '/api/v1/sessions')
 api.add_resource(PostListView, '/api/v1/posts')

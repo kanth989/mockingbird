@@ -1,5 +1,5 @@
 var app = angular.module('ApiboxUI', [
-  'ngRoute', 'ngCookies'
+  'ngRoute', 'ngCookies', 'ngAnimate'
 ]);
 
 /**
@@ -13,7 +13,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     .when("/detail", {templateUrl: "static/partials/detail.html", controller: "PageCtrl"})
     .when("/list", {templateUrl: "static/partials/list.html", controller: "PageCtrl"})
     // else 404
-    .otherwise("/404", {templateUrl: "static/partials/404.html", controller: "PageCtrl"});
+    .otherwise("/404", {templateUrl: "static/partials/notfound.html", controller: "PageCtrl"});
 }]);
 
 /**

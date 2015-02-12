@@ -14,6 +14,7 @@ print basedir
 
 app = Flask(__name__,static_folder='static')
 app.config.from_object('app.config')
+app.config['SAMPLE_FOLDER'] = basedir
 
 # flask-sqlalchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.sqlite')

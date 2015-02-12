@@ -2,7 +2,8 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-2">
             <div class="account-wall">
-            	<h2 class="text-center"> Enter your login credential </h2>
+            	<h2 class="text-center" ng-show="signinMode"> Enter your login credential </h2>
+            	<h2 class="text-center" ng-hide="signinMode"> Signup for new user </h2>
                 <form class="form-signin">
                 	<div class="form-group">
 	                	<input type="text" class="form-control" placeholder="Email" ng-model="username" required autofocus>
@@ -10,10 +11,15 @@
 	                <div class="form-group">
 	                	<input type="password" class="form-control" placeholder="Password" ng-model="password" required>
 	                </div>
-	                <button class="btn btn-lg btn-primary btn-block black-btn" type="submit" ng-click="login()">
+	                <button class="btn btn-lg btn-primary btn-block black-btn" type="submit" ng-show="signinMode" ng-click="login()">
 	                    Sign in</button>
+	                <button class="btn btn-lg btn-primary btn-block black-btn" type="submit" ng-hide="signinMode"  ng-click="signup()">
+	                    Sign up</button>
                 </form>
             </div>
+        </div>
+        <div class="col-md-6 col-md-offset-2">
+        	<button class="btn" ng-show="signinMode" style="border: 0;font-size:16px;background: transparent;color: #999;margin: 0px 25%;display: inline-block;" ng-click="toggleToSignup()">Create new user</button>
         </div>
     </div>
 </div>

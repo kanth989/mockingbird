@@ -3,7 +3,7 @@
     <div class="alert alert-success hide">
         <div class="container ">Your links is ready: </div>
     </div>
-    <div class="main-content" ng-init="init()">
+    <div class="main-content">
         <div class= "two-tables" style= "padding-bottom:20px">
             <table class="container">
                 <tr class="row">
@@ -11,12 +11,12 @@
                         API
                     </td>
                     <td style = "font-weight: 900;" class="col-sm-6 text-right">
-                        <span class="glyphicon glyphicon-plus-sign"></span>
-                        <a class="add_api">ADD NEW API</a>
+                        <span class="glyphicon glyphicon-plus-sign" ng-click="showDetailPage()"></span>
+                        <a class="add_api" ng-click="showDetailPage()">ADD NEW API</a>
                     </td>
                 </tr> 
             </table>
-            <div class="container slidedown" style="display:none">
+            <!-- <div class="container slidedown" style="display:none">
                 <div class="row">
                     <form action="/addendpoint" method="POST" class="form-horizontal col-sm-12 "  role="form" ng-submit="saveRow()" style="padding-top:20px;">
                         <div class="clearfix">
@@ -28,8 +28,8 @@
                             <div class="col-sm-10">
                                 <div class="dropdown">
 
-                                    <select class="form-control"  style="width:30%;" ng-repeat="app_name in data.app_names" name="appname">
-                                        <option value="{{app_name}}">{{app_name['title']}}</option>
+                                    <select class="form-control"  style="width:30%;" ng-repeat="api_info in data.api_list" name="appname">
+                                        <option value="{{api_info}}">{{api_info['title']}}</option>
                                     </select>
                                 </div>
                             </div>
@@ -78,8 +78,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
-
+            </div> -->
         </div>
 
         <div class="container" >
@@ -101,46 +100,43 @@
                 </div>
             </div>  
         </div>
-        <div class="container" ng-repeat="app_name in data.app_names">
+        <div class="container" ng-repeat="api_info in data.api_list">
             <div style="height: 40px;"  class="row">
                 <div class="col-sm-12">
                     <div>
                         <div style= "padding-left: 0px; padding-top: 8px;" class="col-sm-2">
-                            <form method="POST" action="/endpoint_details">
-                                <input class="hide" name="endpoint" value="{{app_name['endpoint']}}"/>
-                                <input class="hide" name="title" value="{{app_name['title']}}"/>
-                                <button class="btn btn-link" style="font-size:16px;">{{app_name['title']}}</button>
+                            <form ng-click="toggleRow(api_info)">
+                                <input class="hide" name="endpoint" value="{{api_info['endpoint']}}"/>
+                                <input class="hide" name="title" value="{{api_info['title']}}"/>
+                                <button class="btn btn-link" style="font-size:16px;">{{api_info['title']}}</button>
                             </form>
                         </div>
                         <div class="col-sm-4 tabel-cells">
-                            <a class="anc">{{app_name['endpoint']}} </a>
+                            <a class="anc">{{api_info['endpoint']}} </a>
                         </div>
                         <div class="col-sm-2 tabel-cells">
-                            <a href="#" style="cursor: default;">{{app_name['endpointmethod']}}</a>
+                            <a href="#" style="cursor: default;">{{api_info['endpointmethod']}}</a>
                         </div>
                         <div class="col-sm-2 tabel-cells">
-                            <form method="POST" action="/delete_endpoint">
-                                <input class="hide" name="endpoint" value="{{app_name['endpoint']}}"/>
-                                <input class="hide" name="title" value="{{app_name['title']}}"/>
-                                <button class="btn" style="border: 0;font-size:16px;background: transparent;color: black; ">Delete</button>
-                            </form>
+                            <!-- <form method="POST" action="/delete_endpoint">
+                                <input class="hide" name="endpoint" value="{{api_info['endpoint']}}"/>
+                                <input class="hide" name="title" value="{{api_info['title']}}"/>
+                            </form> -->
+                            <button class="btn" style="border: 0;font-size:16px;background: transparent;color: black;" ng-click="deleteRow(api_info)">Delete</button>
                         </div>
                         <div class="col-sm-2 tabel-cells">
-                            <a href="#" class= "start-link"  style= "color: green;">Started</a>
-                            <a href="#" class= "stop-link hide"  style= "color: red;" >Stopped</a>
+                            <button class="btn" style="border: 0;font-size:16px;background: transparent;color: black;color: green;" ng-show="api_info.status" ng-click="toggleStatus()">Started</button>
+                            <button class="btn" style="border: 0;font-size:16px;background: transparent;color: black;color: red;" ng-hide="api_info.status" ng-click="toggleStatus()">Stopped</button>
                         </div>
                     </div>
-                    <form action="/endpoint" method="POST" class="form-horizontal col-sm-12 slidedown"  role="form" ng-submit="saveRow()" style="padding-top:20px;display:none">
+                    <form class="form-horizontal col-sm-12 slidedown"  ng-show="api_info.showDetail" role="form" ng-submit="saveRow()" style="padding-top:20px;">
                         <div class="clearfix">
-                            <span class="glyphicon glyphicon-remove pull-right close"></span>
+                            <span class="glyphicon glyphicon-remove pull-right close" ng-click="toggleRow(api_info)"></span>
                         </div>
                         <div class="form-group ">
                             <label class="col-sm-2 control-label">Path</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="path" value={{app_name['title']+app_name['endpoint']}} ng-model="path"  style="
-                                width: 500px;
-                                border-radius: 0;
-                                "/>
+                                <input type="text" class="form-control" name="path" ng-model="api_info.endpoint"  style="width: 500px;border-radius: 0;"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -149,7 +145,7 @@
 
                                 <div class="dropdown">
 
-                                    <select class="form-control" style="width:30%;" name = "method">
+                                    <select class="form-control" style="width:30%;" name = "method" ng-model="api_info.endpointmethod">
                                         <option value="GET">GET</option>
                                         <option value="PUT">PUT</option>
                                         <option value="POST">POST</option>
@@ -161,21 +157,13 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">Response</label>
                             <div class="col-sm-10">
-                                <textarea type="text" class="form-control" name="response" ng-model="response" style="
-                                width: 526px;
-                                height: 164px;
-                                border-radius: 0;
-                                "></textarea>
+                                <textarea type="text" class="form-control" name="response" ng-model="api_info.body" style="width: 526px;height: 164px;border-radius: 0;"></textarea>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div style="padding-left:172px">
-                                <input type="submit" value="Submit" class="btn btn-primary" style="
-                                background-color: #2E2C2C;
-                                border-color: #2E2C2C;
-                                border-radius: 0;
-                                "/>
+                                <input type="submit" value="Submit" class="btn btn-primary black-btn" />
                             </div>
                         </div>
                     </form>
