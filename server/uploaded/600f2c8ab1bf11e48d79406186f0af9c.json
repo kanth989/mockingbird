@@ -1,25 +1,20 @@
 {
-    "name" : "Pramati",
+
+    "name" : "heymant",
+    "name" : "dash it",
     "version" : "v1",
     "prefix" : "/api/v1",
     "endpoints" : [
         {
-            "path" : "/employee/hi",
+            "path" : "/employee1",
             "methods" : [
                 {
                     "method" : "GET",
-                    "result" : [
-                        {
+                    "result" : {
                             "id" : 11711,
                             "name" : "Raju",
                             "designation" : "Developer"
-                        },
-                        {
-                            "id" : 11712,
-                            "name" : "Pandu",
-                            "designation" : "Sr. Developer"
                         }
-                    ]
                 },
                 {
                     "method" : "POST",
@@ -36,7 +31,7 @@
             ]
         },
         {
-            "path": "/org/details/p",
+            "path": "/org/details1",
             "methods": [
                 {
                     "method": "GET",

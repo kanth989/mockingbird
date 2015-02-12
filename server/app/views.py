@@ -1,4 +1,4 @@
-from flask import g, request,render_template,Response,redirect,url_for
+from flask import g, request,render_template,Response,redirect,url_for,abort,send_from_directory
 from flask.ext import restful
 
 from server import api, db, flask_bcrypt, auth
@@ -10,12 +10,10 @@ import os,uuid,json,jsonschema
 
 
 def extract(path):
-    print path
-#    apps = path.split('&')
-#    app_name = apps[0].split('=')[1].split('.')[1]
-#    app_path = apps[1].split('=')[1]
-#    return app_name,app_path
-    return 'partha', path
+    apps = path.split('&')
+    app_name = apps[0].split('=')[1].split('.')[1]
+    app_path = apps[1].split('=')[1]
+    return app_name,app_path
 
 @auth.verify_password
 def verify_password(email, password):
@@ -50,7 +48,7 @@ class SessionView(restful.Resource):
 class PostListView(restful.Resource):
     @auth.login_required
     def get(self):
-        return Response(render_template("indexnew.html" ,app_names=self.allapps),mimetype='text/html')
+        return self.allapps,201
 
     @auth.login_required
     def post(self):
@@ -63,10 +61,7 @@ class PostListView(restful.Resource):
         post = Post(form.title.data, form.endpoint.data ,form.body.data, form.endpointmethod.data)
         db.session.add(post)
         db.session.commit()
-        f = open('paaru','w')
-        f.write(render_template("indexnew.html" ,app_names=self.allapps))
-        f.close()
-        return Response(render_template("indexnew.html" ,app_names=self.allapps),mimetype='text/html')
+        return self.allapps,201
 
     @property
     def allapps(self):
@@ -84,14 +79,14 @@ class PostView(restful.Resource):
         form = PostCreateForm()
         if not form.validate_on_submit():
             return form.errors, 422
-        response = updatePosts(id=id,title=form.title.data,endpoint=form.endpoint.data,endpointmethod=form.endpointmethod.data)
+        response = updatePosts(id=id,title=form.title.data,endpoint=form.endpoint.data,endpointmethod=form.endpointmethod.data,body=form.body.data)
         return response, 201
 
 def updatePosts(**kwargs):
+    body = kwargs.pop('body')
     if kwargs.has_key('id'):
         post = Post.query.filter_by(id=kwargs['id']).first()
     else:
-        body = kwargs.pop('body')
         post = Post.query.filter_by(**kwargs).first()
     if PostSerializer(post).data['id']:
         post.title = kwargs['title']
@@ -174,11 +169,11 @@ class ServiceSSview(restful.Resource):
     def get(self, status, id):
         posts = Post.query.filter_by(id=id).first()
         k=1
-	if status == 'false' or status=='stop':
+        if status == 'false' or status=='stop':
              k = 0
         posts.status = k
         db.session.commit()
-        return PostSerializer(posts).data
+        return {'Message':'Successful','status':200}
 
 
 class ServiceDeleteView(restful.Resource):
@@ -191,7 +186,9 @@ class ServiceDeleteView(restful.Resource):
 
 class UI(restful.Resource):
     def get(self):
-        return Response(open('app/templates/second.html').read(),mimetype='text/html')
+        return Response(render_template('index.html'),mimetype='text/html')
+
+
 # Adding Views as resources to Application
 
 api.add_resource(UI,'/')

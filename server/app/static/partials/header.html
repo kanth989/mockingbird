@@ -1,0 +1,18 @@
+<div class="header" ng-controller="headerController">
+    <div class="container">
+        <a href="#/" class="link-a">login</a>
+        <div class="clearfix"></div>
+        <form xaction="/api/v1/upload" method="POST" id="uploadForm" enctype="multipart/form-data">
+            <img src="../static/img/mock.png" style="display: block;margin: 0px auto;">
+            <div class="form-box">
+                <input class="actual" type="file" name="file"></input>
+                 <div class="input-group">
+                   <input type="" class="form-control file-input" name="">
+                   <div class="input-group-btn" style="">
+                      <input class="btn btn-default upload black-btn" type="submit" style="" value="Upload" />
+                   </div>
+                </div>
+            </div>
+        </form>           
+    </div>
+</div>

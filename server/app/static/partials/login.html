@@ -1,0 +1,19 @@
+<div class="container" ng-controller="loginController">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-2">
+            <div class="account-wall">
+            	<h2 class="text-center"> Enter your login credential </h2>
+                <form class="form-signin">
+                	<div class="form-group">
+	                	<input type="text" class="form-control" placeholder="Email" ng-model="username" required autofocus>
+	                </div>
+	                <div class="form-group">
+	                	<input type="password" class="form-control" placeholder="Password" ng-model="password" required>
+	                </div>
+	                <button class="btn btn-lg btn-primary btn-block black-btn" type="submit" ng-click="login()">
+	                    Sign in</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -27,7 +27,7 @@ a,.glyphicon{
             <div class="container">
                 <a href="#" class="link-a">login</a>
                 <div class="clearfix"></div>
-                <form action="/app" method="POST" id="uploadForm" enctype="multipart/form-data">
+                <form action="/api/v1/upload" method="POST" id="uploadForm" enctype="multipart/form-data">
                     <img src="{{url_for('static', filename='img/mock.png')}}" style="display: block;margin: 0px auto;">
                     <div class="form-box">
                         <!-- <input class="input-a browse-btn" type="file" name="filehere"></input> -->
@@ -62,7 +62,7 @@ a,.glyphicon{
             </table>
             <div class="container slidedown" style="display:none">
                 <div class="row">
-                    <form action="/addendpoint" method="POST" class="form-horizontal col-sm-12 "  role="form" ng-submit="saveRow()" style="padding-top:20px;">
+                    <form action="/api/v1/posts" method="POST" class="form-horizontal col-sm-12 "  role="form" ng-submit="saveRow()" style="padding-top:20px;">
                         <div class="clearfix">
                             <span class="glyphicon glyphicon-remove pull-right add-api-close"></span>
                         </div>
@@ -70,14 +70,10 @@ a,.glyphicon{
 
                             <label class="col-sm-2 control-label">Select Application</label>
                             <div class="col-sm-10">
-                                <div class="dropdown">
-
-                                    <select class="form-control"  style="width:30%;" name="appname">
-                                        {% for app_name in app_names%}
-                                        <option value="{{app_name['title']}}">{{app_name['title']}}</option>
-                                        {%endfor%}
-                                    </select>
-                                </div>
+                                <input type="text" class="form-control" name="path" value="" ng-model="path"  style="
+                                width: 500px;
+                                border-radius: 0;
+                                "/>
                             </div>
                         </div>
                         <div class="form-group ">
@@ -169,26 +165,35 @@ a,.glyphicon{
                     <a href="#" style="cursor: default;">{{app_name['endpointmethod']}}</a>
                 </div>
                 <div class="col-sm-2 tabel-cells">
-                            <form method="POST" action="/delete_endpoint">
+                            <form method="POST" action="/apistatus/v1/delete/{{app_name['id']}}">
                             <input class="hide" name="endpoint" value="{{app_name['endpoint']}}"/>
                             <input class="hide" name="title" value="{{app_name['title']}}"/>
                             <button class="btn" style="border: 0;font-size:16px;background: transparent;color: black; ">Delete</button>
                             </form>
                         </div>
                 <div class="col-sm-2 tabel-cells">
-                    <a href="#" class= "start-link"  style= "color: green;">Started</a>
-                    <a href="#" class= "stop-link hide"  style= "color: red;" >Stopped</a>
+                    <a href="/apistatus/v1/{% if app_name['status']=='true' %}stop{% else %}stop{%endif %}/{{app_name['id']}}" class= "start-link"  style= "color: green;">{% if app_name['status']==true %}started{% else %}stopped{%endif %}</a>
+                    <a href="/apistatus/v1/start/{{app_name['id']}}" class= "stop-link hide"  style= "color: red;" >Start</a>
 
                 </div>
             </div>
-            <form action="/endpoint" method="POST" class="form-horizontal col-sm-12 slidedown"  role="form" ng-submit="saveRow()" style="padding-top:20px;display:none">
+            <form action="/api/v1/posts/{{app_name['id']}}" method="POST" class="form-horizontal col-sm-12 slidedown"  role="form" ng-submit="saveRow()" style="padding-top:20px;display:none">
                 <div class="clearfix">
                     <span class="glyphicon glyphicon-remove pull-right close"></span>
                 </div>
                 <div class="form-group ">
                     <label class="col-sm-2 control-label">Path</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="path" value={{app_name['title']}}{{app_name['endpoint']}} ng-model="path"  style="
+                        <input type="text" class="form-control" name="title" value={{app_name['title']}} ng-model="path"  style="
+                        width: 500px;
+                        border-radius: 0;
+                        "/>
+                    </div>
+                </div>                
+                <div class="form-group ">
+                    <label class="col-sm-2 control-label">Path</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="endpoint" value={{app_name['endpoint']}} ng-model="path"  style="
                         width: 500px;
                         border-radius: 0;
                         "/>
@@ -200,7 +205,7 @@ a,.glyphicon{
 
                       <div class="dropdown">
 
-                        <select class="form-control" style="width:30%;" name = "method">
+                        <select class="form-control" style="width:30%;" name = "endpointmethod">
                             <option value="GET">GET</option>
                             <option value="PUT">PUT</option>
                             <option value="POST">POST</option>
@@ -212,7 +217,7 @@ a,.glyphicon{
             <div class="form-group">
                 <label class="col-sm-2 control-label">Response</label>
                 <div class="col-sm-10">
-                    <textarea type="text" class="form-control" name="response" ng-model="response" style="
+                    <textarea type="text" class="form-control" name="body" ng-model="response" style="
                     width: 526px;
                     height: 164px;
                     border-radius: 0;
