@@ -10,17 +10,27 @@ app.config(['$routeProvider', function ($routeProvider) {
     // Home
     .when("/", {templateUrl: "static/partials/login.html"})
     // Pages
-    .when("/detail", {templateUrl: "static/partials/detail.html", controller: "PageCtrl"})
-    .when("/list", {templateUrl: "static/partials/list.html", controller: "PageCtrl"})
+    .when("/detail", {templateUrl: "static/partials/detail.html"})
+    .when("/list", {templateUrl: "static/partials/list.html"})
     // else 404
-    .otherwise("/404", {templateUrl: "static/partials/notfound.html", controller: "PageCtrl"});
+    .otherwise("/404", {templateUrl: "static/partials/notfound.html"});
 }]);
 
-/**
- * Controls all other Pages
- */
-app.controller('PageCtrl', function () {
-  console.log("Page Controller reporting for duty.");
+app.directive('jsonText', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attr, ngModel) {            
+          function into(input) {
+            return input;
+          }
+          function out(data) {
+            return JSON.stringify(data);
+          }
+          ngModel.$parsers.push(into);
+          ngModel.$formatters.push(out);
+        }
+    };
 });
 
 var alertBox = (function(){

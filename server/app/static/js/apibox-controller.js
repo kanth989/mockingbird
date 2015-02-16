@@ -44,7 +44,7 @@ app.controller("loginController", ['$scope', '$location', '$cookies', 'apiData',
 				alertBox.showSuccess("Login Succeded");
 				$cookies.username = $scope.username;
 				$cookies.password = $scope.password;
-				if(data && data instanceof Array){
+				if(data && data instanceof Array && data.length){
 					apiData.data = data;
 					$location.path('/list');
 					$scope.$apply();

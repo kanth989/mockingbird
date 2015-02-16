@@ -75,12 +75,7 @@ class PostListView(restful.Resource):
         form = PostCreateForm()
         if not form.validate_on_submit():
             return form.errors, 422
-        postdata = Post.query.filter_by(title = form.title.data,endpoint = form.endpoint.data , endpointmethod = form.endpointmethod.data).first()
-        if PostSerializer(postdata).data['id']:
-            return "Endpoint method already exists"
-        post = Post(form.title.data, form.endpoint.data ,json.dumps(form.body.data), form.endpointmethod.data)
-        db.session.add(post)
-        db.session.commit()
+        postdata = updatePosts(title = form.title.data,endpoint = form.endpoint.data , endpointmethod = form.endpointmethod.data,user=g.user)
         return getallApps(),201
 
 
@@ -104,9 +99,6 @@ def updatePosts(**kwargs):
     else:
         post = Post.query.filter_by(**kwargs).first()
     if PostSerializer(post).data['id']:
-        post.title = kwargs['title']
-        post.endpoint = kwargs['endpoint']
-        post.endpointmethod = kwargs['endpointmethod']
         post.body = json.dumps(body)
     else:
         post = Post(kwargs['title'], kwargs['endpoint'] ,json.dumps(body), kwargs['endpointmethod'])
@@ -130,7 +122,7 @@ class  Fileupload(restful.Resource):
                         updatePosts(title = self.content.get('name',None),\
                                     endpoint = data.get('path',None),\
                                     endpointmethod = mets.get('method',None),\
-                                    body = mets.get('result',None)) 
+                                    body = mets.get('result',None),user=g.user) 
 		return getallApps(),200
             return {'Message':'Not parsed'}
 	except: 
