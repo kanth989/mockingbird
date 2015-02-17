@@ -75,7 +75,7 @@ class PostListView(restful.Resource):
         form = PostCreateForm()
         if not form.validate_on_submit():
             return form.errors, 422
-        postdata = updatePosts(title = form.title.data,endpoint = form.endpoint.data , endpointmethod = form.endpointmethod.data,user=g.user)
+        postdata = updatePosts(title = form.title.data,endpoint = form.endpoint.data , endpointmethod = form.endpointmethod.data,user=g.user,body=form.body.data)
         return getallApps(),201
 
 
