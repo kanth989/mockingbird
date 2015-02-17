@@ -33,7 +33,7 @@ app.controller("loginController", ['$scope', '$location', '$cookies', 'apiData',
 	$scope.login = function(){
 		
 		$.ajax({
-			url : 'http://172.17.0.48/api/v1/posts',
+			url : '/api/v1/posts',
 			type: "GET",
 			async : true,
 			dataType: 'json',
@@ -64,7 +64,7 @@ app.controller("loginController", ['$scope', '$location', '$cookies', 'apiData',
 	$scope.signup = function(){
 		var scopeData = $scope;
 		$.ajax({
-			url : 'http://172.17.0.48/api/v1/users',
+			url : '/api/v1/users',
 			type: "POST",
 			async : true,
 			dataType: 'json',
@@ -113,7 +113,7 @@ app.controller("detailViewController", ['$scope', '$location', '$cookies' , 'api
 	$scope.addNewEndpoint = function(){
 		var scopeData = $scope;
 		$.ajax({
-			url : 'http://172.17.0.48/api/v1/posts',
+			url : '/api/v1/posts',
 			type: "POST",
 			async : true,
 			dataType: 'json',
@@ -150,7 +150,7 @@ app.controller("listViewController", ['$scope', '$location', '$cookies', 'apiDat
 	$scope.saveRow = function(){
 		var currentRow = this;
 		$.ajax({
-			url : 'http://172.17.0.48/api/v1/posts/'+currentRow.api_info.id,
+			url : '/api/v1/posts/'+currentRow.api_info.id,
 			type: "POST",
 			async : true,
 			dataType: 'json',
@@ -183,7 +183,7 @@ app.controller("listViewController", ['$scope', '$location', '$cookies', 'apiDat
 	$scope.toggleStatus = function(){
 		var currentRow = this;
 		$.ajax({
-			url : 'http://172.17.0.48/apistatus/v1/'+(!currentRow.api_info.status)+'/'+currentRow.api_info.id,
+			url : '/apistatus/v1/'+(!currentRow.api_info.status)+'/'+currentRow.api_info.id,
 			type: "GET",
 			async : true,
 			dataType: 'json',
@@ -201,7 +201,7 @@ app.controller("listViewController", ['$scope', '$location', '$cookies', 'apiDat
 	$scope.deleteRow = function(){
 		var currentRow = this;
 		$.ajax({
-			url : 'http://172.17.0.48/apistatus/v1/delete/'+currentRow.api_info.id,
+			url : '/apistatus/v1/delete/'+currentRow.api_info.id,
 			type: "POST",
 			async : true,
 			headers: {
@@ -225,7 +225,7 @@ app.controller("listViewController", ['$scope', '$location', '$cookies', 'apiDat
 	};
 	if(!(apiData && apiData.data)){
 		$.ajax({
-			url : 'http://172.17.0.48/api/v1/posts',
+			url : '/api/v1/posts',
 			type: "GET",
 			async : true,
 			dataType: 'json',
@@ -271,7 +271,7 @@ app.controller("headerController", ['$scope', '$location', '$cookies', 'apiData'
      formData.append( 'file', actualFileInp.files[0] );
 
 			$.ajax({
-				url:'http://172.17.0.48/api/v1/upload',
+				url:'/api/v1/upload',
 				type: 'POST',
 				data: formData,
 				async: true,
