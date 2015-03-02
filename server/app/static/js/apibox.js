@@ -34,67 +34,118 @@ app.directive('jsonText', function() {
 });
 
 var alertBox = (function(){
+  var autoCloseId,
+      closeCallbackRegistered;
 
   var $alertBox = $("#alert-box"),
+      $alertMsgCont = $alertBox.find(".msg-container"),
       $alertType = $alertBox.find("strong"),
       $alertMsg = $alertBox.find("label");
 
-  function showError(message){
+  function showError(message, properties, eventInfo){
 
     $alertType.text("Error! ");
     $alertMsg.text(message);
-    _applySpecialAlert('alert-danger');
 
-    _showAlert();
-    _invokeAlertHide();
+    _showAlert(properties);
+    _applySpecialAlert('alert-danger');
+    _invokeAlertHide((eventInfo && eventInfo.onclose));
   }
 
-  function showWarning(message){
+  function showWarning(message, properties, eventInfo){
 
     $alertType.text("Warning! ");
     $alertMsg.text(message);
-    _applySpecialAlert('alert-warning');
 
-    _showAlert();
-    _invokeAlertHide();
+    _showAlert(properties);
+    _applySpecialAlert('alert-warning');
+    _invokeAlertHide((eventInfo && eventInfo.onclose));
   }
 
-  function showSuccess(message){
+  function showSuccess(message, properties, eventInfo){
 
     $alertType.text("Success! ");
     $alertMsg.text(message);
-    _applySpecialAlert('alert-success');
 
-    _showAlert();
-    _invokeAlertHide();
+    _showAlert(properties);
+    _applySpecialAlert('alert-done');
+    _invokeAlertHide((eventInfo && eventInfo.onclose));
   }
 
-  function _invokeAlertHide(){
-    window.setTimeout(function(){
-      _hideAlert();
+  function forceClose(){
+    _hideAlert();
+    if(closeCallbackRegistered){
+        closeCallbackRegistered.call();
+        closeCallbackRegistered = null;
+      }
+  }
+
+  function _invokeAlertHide(closeCallback){
+    closeCallbackRegistered = closeCallback;
+    autoCloseId = window.setTimeout(function(){
+      var status = _hideAlert();
+      if(status && closeCallback){
+        closeCallback.call();
+        closeCallbackRegistered = null;
+      }
     }, 5000);
   }
 
   function _applySpecialAlert(classNameValue){
-    $alertBox.removeAttr('class');
-    $alertBox.attr('class', 'alert collapse');
+    
     $alertBox.addClass(classNameValue);
   }
 
-  function _showAlert(){
+  function _showAlert(propertyInfo){
+    forceClose();
+    var actionLink = "<a>{{Action}}</a>";
+    if(propertyInfo){
+      if(propertyInfo.dom){
+        var $refElm = $(propertyInfo.dom);
+        if($refElm.length>0){
+          $alertBox.css("top", $(propertyInfo.dom).offset().top + "px");
+        }
+        if(propertyInfo.action){
+          if(propertyInfo.action.fnName){
+            $alertMsgCont.append(actionLink.replace("{{Action}}", propertyInfo.action.fnName));
+            $alertMsgCont.find("*:last-child").bind("click", function(){
+              _hideAlert();
+              propertyInfo.action.fnAction.call();
+            });
+          }
+        }
+      }
+    }
+    $alertBox.removeAttr('class');
+    $alertBox.attr('class', 'alert collapse');
+
     $alertBox.removeClass("collapse");
     $alertBox.addClass("expand");
   }
 
   function _hideAlert(){
-    $alertBox.removeClass("expand");
-    $alertBox.addClass("collapse");
+    if($alertBox.hasClass("expand")){
+      $alertBox.removeClass("expand");
+      $alertBox.addClass("collapse");
+
+      while($alertMsg.next().length>0){
+        $alertMsg.next().remove();
+      }
+      if(autoCloseId){
+        window.clearTimeout(autoCloseId);
+      }
+      return true;
+    } else {
+      return false;
+    }
+    
   }
 
 
   return {
     showError : showError,
     showWarning : showWarning,
-    showSuccess : showSuccess
+    showSuccess : showSuccess,
+    forceClose : forceClose
   };
 })();

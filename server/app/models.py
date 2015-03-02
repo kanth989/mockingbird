@@ -31,8 +31,8 @@ class Post(db.Model):
     
 
     def __init__(self, title, endpoint,body,endpointmethod):
-        self.title = title
-        self.endpoint= endpoint
+        self.title = title.lower()
+        self.endpoint= (not endpoint.startswith('/') and '/' or '')+endpoint
         self.body = body
         self.endpointmethod=endpointmethod
         self.user_id = g.user.id

@@ -1,25 +1,37 @@
-<div class="container" ng-controller="loginController">
-    <div class="row">
-        <div class="col-md-6 col-md-offset-2">
-            <div class="account-wall">
-            	<h2 class="text-center" ng-show="signinMode"> Enter your login credential </h2>
-            	<h2 class="text-center" ng-hide="signinMode"> Signup for new user </h2>
-                <form class="form-signin">
-                	<div class="form-group">
-	                	<input type="text" class="form-control" placeholder="Email" ng-model="username" required autofocus>
-	                </div>
-	                <div class="form-group">
-	                	<input type="password" class="form-control" placeholder="Password" ng-model="password" required>
-	                </div>
-	                <button class="btn btn-lg btn-primary btn-block black-btn" type="submit" ng-show="signinMode" ng-click="login()">
-	                    Sign in</button>
-	                <button class="btn btn-lg btn-primary btn-block black-btn" type="submit" ng-hide="signinMode"  ng-click="signup()">
-	                    Sign up</button>
-                </form>
+<div style="height:100%;width:100%">
+    <div class="vertical-center">
+        <div class="container" ng-controller="loginController">
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-4 col-md-5 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+                    <div class="account-wall">
+                    	<img src="static/img/mock.png" style="display: block;margin: 0px auto 20px auto;width: 65%;">
+                        <form class="form-signin">
+                        	<div class="form-group">
+        	                	<input type="text" class="form-control basic-inp" placeholder="Username" ng-model="username" required autofocus>
+        	                </div>
+        	                <div class="form-group" style="margin-bottom: 10px;">
+        	                	<input type="password" class="form-control basic-inp" placeholder="Password" ng-model="password" required>
+        	                </div>
+                            <div class="form-group" ng-show="signinMode">
+                                <a style="color: #999;font-size:13px;">Forgot Password?</a>
+                            </div>
+        	                <button class="btn btn-lg btn-primary btn-block black-btn" type="submit" ng-show="signinMode" ng-click="login()">
+        	                    LOGIN</button>
+        	                <button class="btn btn-lg btn-primary btn-block black-btn" type="submit" ng-hide="signinMode"  ng-click="signup()">
+        	                    Sign up</button>
+                            <button class="btn btn-lg btn-primary btn-block base-btn" ng-show="signinMode" ng-click="toggleToSignup()">NEW USER</button>
+                        </form>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6 col-md-offset-2">
-        	<button class="btn" ng-show="signinMode" style="border: 0;font-size:16px;background: transparent;color: #999;margin: 0px 25%;display: inline-block;" ng-click="toggleToSignup()">Create new user</button>
+            <div class="row">
+                <div class="col-lg-4 col-lg-offset-4 col-md-5 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+                    <div ng-hide="signinMode" style="text-align: center;margin-top: 10px;">
+                        <span style="color: #999;">Already have an account? </span>
+                        <button class="btn btn-link" style="padding:0px;" ng-click="toggleToSignin()">Sign in</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

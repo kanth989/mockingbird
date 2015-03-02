@@ -16,8 +16,9 @@
         </style>
     </head>
     <body ng-app="ApiboxUI">
-        <div id="alert-box" class="alert collapse" style="margin: 0px auto;width: 50%;">
-            <div style="text-align: center;">
+        <div id="alert-box" class="alert collapse">
+            <span class="glyphicon glyphicon-remove pull-right" onclick="alertBox.forceClose()"></span>
+            <div class="msg-container">
                 <strong></strong><label></label>
             </div>
         </div>

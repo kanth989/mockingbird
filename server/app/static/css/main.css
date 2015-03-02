@@ -1,11 +1,18 @@
+@font-face {
+	font-family: "aileron";
+	src: url("/static/fonts/Aileron-Light.otf"),
+		 url("/static/fonts/Aileron-Regular.otf"),
+		 url("/static/fonts/Aileron-UltraLight.otf");
+}
+
 /**
 ***	Login page
 ***/
 
 .form-signin
 {
-    max-width: 330px;
-    padding: 15px;
+    max-width: 90%;
+    padding: 15px 0px;
     margin: 0 auto;
 }
 .form-signin .form-signin-heading, .form-signin .checkbox
@@ -19,7 +26,8 @@
 .form-signin .form-control
 {
     position: relative;
-    font-size: 16px;
+    font-size: 13px;
+
     height: auto;
     padding: 10px;
     -webkit-box-sizing: border-box;
@@ -29,6 +37,10 @@
 .form-signin .form-control:focus
 {
     z-index: 2;
+}
+
+.form-signin a{
+	font-size: 11px;
 }
 .form-signin input[type="text"]
 {
@@ -46,12 +58,24 @@
 {
     margin-top: 20px;
     padding: 40px 0px 20px 0px;
-    background-color: #f7f7f7;
+    background-color: #f6f6f6;
     -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
     box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
 }
 
+.basic-inp{
+	background-color: #ebebeb;
+	border: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	-webkit-transition: none;
+	transition: none;
+	border-radius: 0px;
+
+	color: #999;
+	font-family: aileron;
+}
 
 /**
 ***	Login page
@@ -67,7 +91,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 	vertical-align: baseline;
 	font-weight: normal;
 	outline: none;
-	font-family: helvetica;
+	font-family: aileron;
 	color: #666;
 
 }
@@ -108,15 +132,19 @@ a:hover{
 }
 
 .control-label{
-	text-align: right;
-	padding: 8px 0px;
+	text-align: left;
+	padding: 8px 12px;
+	color: #999;
+	font-family: aileron;
+	font-size: 18px;
 }
 
 .grey-text{
-	color: rgb(160, 156, 156);
+	color: #999;
 	margin-bottom: 10px;
-	font-family: serif;
-	font-size: 22px;
+	font-family: aileron;
+	font-size: 18px;
+	padding-left: 0px;
 }
 
 .actual{
@@ -125,10 +153,31 @@ a:hover{
 }
 
 .black-btn, .black-btn:hover{
-	background: #4F4A4A !important;
-	border-color: #4F4A4A !important;
-	color: white !important;
-	border-radius: 
+	background: #333 !important;
+	border-color: #333 !important;
+	color: #fff !important;
+	border-radius: 0px;
+	font-size: 14px;
+	font-family: aileron;
+	font-weight: bold;
+	height: 50px;
+}
+
+.base-btn, .base-btn:hover{
+	background: #FFFFFF !important;
+	border: 3px solid #666 !important;
+	color: #666 !important;
+	border-radius: 0px;
+	margin-top: 15px!important;
+	font-size: 14px;
+	font-family: aileron;
+	font-weight: bold;
+	height: 50px;
+}
+
+.upload{
+	padding-left: 25px;
+	padding-right: 25px;
 }
 
 /*reset ends*/
@@ -139,11 +188,15 @@ body{
 	background: #f6f6f6;
 	padding:20px 0px;
 	text-align: center;
+	padding-bottom: 50px;
 }
 .link-a{
-	font-size: 14px;
+	font-size: 13px;
+	font-family: aileron;
 	text-transform: uppercase;
 	color: #666 !important;
+	border: 0;
+	background: transparent;
 }
 .header .link-a{
 	float: right;
@@ -159,6 +212,11 @@ body{
 .main-content{
 
 	padding: 50px 0px 150px 0px;
+}
+
+.bigger-height, .bigger-height:hover{
+	height: 50px;
+	font-size: 18px;
 }
 
 h2{
@@ -182,9 +240,9 @@ h2{
 	padding: 5px 20px;
 
 }
-.form-box{
+/*.form-box{
 	margin: 0px 23%;
-}
+}*/
 
 .btn-a{
 	padding: 10px 30px;
@@ -217,9 +275,6 @@ textarea.input-a{
 	height: 100px;
 }
 
-.container{
-	width: 800px;
-}
 .form-list>li{
 	min-height: 65px;
 }
@@ -303,19 +358,132 @@ h4 a{
 .lb-d{width:20%;}
 
 .tabel-cells{
-	padding-right: 50px; 
 	padding-top: 10px;
+	text-align: left;
+	overflow: hidden;
+	white-space: nowrap;
+	padding-right: 5px;
 }
 .tabel-cells>a{
 	display: inline-block;
-	padding: 8px 17%;
-	text-align: center;
+	padding: 8px 0px;
+	text-align: left;
+	width: 100%;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
-.tabel-cells>b{
-        display: inherit;
-        font-size: 12px;
-        padding: 8px 17%;
-        text-align: left;
+
+.tabel-cells>form>button.btn-link{
+	font-size:16px;
+	outline:none;
+	padding-left: 10px;
+	width: 100%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	text-align: left;
+}
+
+.file-input{
+	border: 1px solid #e1e1e1;
+}
+
+.list-row-header{
+	font-size: 15px;
+	font-weight: bolder;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	overflow: hidden;
+	word-break: inherit;
+	white-space: nowrap;
+	text-align: left;
+}
+
+.list-row-header:first-child{
+	padding-left: 25px;
+}
+
+.data-row-sep{
+	border-bottom: 1px solid #d5d5d5;
+	background-color: #f1f1f1;
+}
+
+.detail-row{
+	background-color: #f9f9f9;
+	border-top: 1px solid #d5d5d5;
+}
+
+#alert-box{
+	margin: 0px auto;
+	width: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#alert-box>.msg-container{
+	text-align: center;
+	font-size: 15px;
+}
+#alert-box>.msg-container>*{
+	color: #333;
+}
+
+#alert-box>.msg-container>a{
+	color: #A0A0FA;
+	text-decoration: underline;
+}
+
+.alert-done{
+	border-color: #74b774;
+	background-color: #74b774;
+}
+
+.detail-inp{
+	background-color: #f9f9f9;
+}
+
+.add_api{
+	color: #333;
+	font-family: aileron;
+	font-size: 14px;
+	font-weight: bolder;
+	position: relative;
+	top: -2px;
+}
+
+.detail-label{
+	display: inline-block;
+	margin: 0em 0em 1em 5em;
+	font-weight: bolder;
+	font-size: 18px;
+	color: #333;
+}
+.detail-label label{
+	font: inherit;
+	color: inherit;
+}
+
+.close{
+	margin-right: 10px;
+	background-image: url('/static/img/close.png');
+	display: inline-block;
+	height: 2em;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-position: 100% 0px;
+}
+
+.delete-link{
+	border: 0;
+	font-size:16px;
+	background: transparent;
+	color: black;
+	padding-left: 0px;
+}
+
+.delete-link:disabled{
+	color: #ABA7A7;
+	cursor: not-allowed;
 }
 /***************************************************************************************************mediaqueries begin *******************************************/
 /***************************************************************************************************mediaqueries begin *******************************************/
@@ -335,6 +503,47 @@ h4 a{
     opacity: 0;
 }
 
+.vertical-center{
+	min-height: 100%;  /* Fallback for vh unit */
+	min-height: 100vh; /* You might also want to use
+	            'height' property instead.
+	            
+	            Note that for percentage values of
+	            'height' or 'min-height' properties,
+	            the 'height' of the parent element
+	            should be specified explicitly.
+
+	            In this case the parent of '.vertical-center'
+	            is the <body> element */
+
+	/* Make it a flex container */
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex; 
+
+	/* Align the bootstrap's container vertically */
+	-webkit-box-align : center;
+	-webkit-align-items : center;
+	-moz-box-align : center;
+	-ms-flex-align : center;
+	align-items : center;
+
+	/* In legacy web browsers such as Firefox 9
+	we need to specify the width of the flex container */
+	width: 100%;
+
+	/* Also 'margin: 0 auto' doesn't have any effect on flex items in such web browsers
+	hence the bootstrap's container won't be aligned to the center anymore.
+
+	Therefore, we should use the following declarations to get it centered again */
+	-webkit-box-pack : center;
+	-moz-box-pack : center;
+	-ms-flex-pack : center;
+	-webkit-justify-content : center;
+	justify-content : center;
+}
 
 
 @media screen and (min-width: 768px) {

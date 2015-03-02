@@ -13,11 +13,9 @@ def extract(path):
     apps = path.split('&')
     app_name = apps[0].split('=')[1].split('.')[1]
     app_path = apps[1].split('=')[1]
-    print app_name,app_path
     return app_name,app_path
 
 def getResponse(app_name,app_path, method):
-    print app_name,app_path, method
     posts = Post.query.filter_by(title= app_name, endpoint=app_path,endpointmethod=method,status=1).first()
     body = DomainSerializer(posts).data['body']
     if body:
@@ -26,7 +24,6 @@ def getResponse(app_name,app_path, method):
         return 'Method Not allowed' , 405
 
 def processResponse(apps):
-    print apps
     for app in apps:
         app['body'] = json.loads(app['body'])
     return apps
@@ -97,6 +94,7 @@ def updatePosts(**kwargs):
     if kwargs.has_key('id'):
         post = Post.query.filter_by(id=kwargs['id']).first()
     else:
+        kwargs['title'] = kwargs['title'].lower()
         post = Post.query.filter_by(**kwargs).first()
     if PostSerializer(post).data['id']:
         post.body = json.dumps(body)
@@ -110,7 +108,6 @@ def updatePosts(**kwargs):
 class  Fileupload(restful.Resource):
     @auth.login_required
     def post(self):
-        print request.files
         file = request.files['file']
 	filename = secure_filename(file.filename)
 	fname = str(uuid.uuid1()).replace('-','')+'.json'
@@ -185,7 +182,6 @@ class samplejson(restful.Resource):
 
 
 # Adding Views as resources to Application
-
 api.add_resource(UI,'/')
 api.add_resource(samplejson,'/download')
 api.add_resource(UserView, '/api/v1/users')

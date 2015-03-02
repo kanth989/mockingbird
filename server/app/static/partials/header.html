@@ -1,21 +1,27 @@
 <div class="header" ng-controller="headerController">
     <div class="container">
-         <button class="btn link-a" style="border: 0;font-size:16px;background: transparent;color: black;" ng-click="logout()">logout</button>
-        <div class="clearfix"></div>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <img src="../static/img/mock.png" style="display: block;margin: 0px auto;">
-            <div class="form-box">
+      <div class="row">
+        <div>
+          <button class="btn link-a" ng-click="logout()">logout</button>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+       <div class="row">
+         <img src="../static/img/mock.png" style="display: block;margin: 0px auto 20px auto;max-width: 100%;">
+       </div>
+      <form id="uploadForm" enctype="multipart/form-data" class="row">
+            <div class="form-box col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
                 <input class="actual" type="file" name="file"/>
                  <div class="input-group">
-                   <input type="" class="form-control file-input" name="">
+                   <input type="" class="form-control file-input basic-inp bigger-height drop-area" placeholder="Drop your JSON files here" name="">
                    <div class="input-group-btn" style="">
-                      <input class="btn btn-default upload black-btn" type="submit" style="" value="Upload" />
+                      <input class="btn btn-default upload black-btn bigger-height" type="submit" style="" value="UPLOAD" />
                    </div>
                 </div>
+                <div style="font: initial;text-align: left;padding-top: 10px;color: #999;font-family: aileron;">
+                  <a style="font: initial;color: #A0A0FA;font-family: aileron;" href="http://172.17.0.48/download">Click here</a> to download sample JSON
+                </div>
             </div>
-            <div style="font: initial;text-align: left;padding: 10px 0px 0px 25%;">
-              <a style="font: initial;color: #A0A0FA;" href="/download">Click here</a> to download sample JSON
-            </div>
-        </form>           
+        </form> 
     </div>
 </div>
