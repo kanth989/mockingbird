@@ -1,0 +1,8 @@
+ * Running on http://0.0.0.0:5000/
+ * Restarting with reloader
+127.0.0.1 - - [11/Mar/2015 10:52:41] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [11/Mar/2015 10:52:52] "GET /api/v1/posts HTTP/1.0" 401 -
+127.0.0.1 - - [11/Mar/2015 10:52:57] "GET / HTTP/1.0" 200 -
+127.0.0.1 - - [11/Mar/2015 10:53:14] "GET /api/v1/posts HTTP/1.0" 401 -
+127.0.0.1 - - [11/Mar/2015 10:53:15] "GET /static/fonts/glyphicons-halflings-regular.woff HTTP/1.0" 200 -
+127.0.0.1 - - [11/Mar/2015 10:53:25] "GET / HTTP/1.0" 200 -
